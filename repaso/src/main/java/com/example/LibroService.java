@@ -8,9 +8,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +40,8 @@ public class LibroService {
             System.out.println("3) Leer libros (Binario).");
             System.out.println("4) Añadir libro (Binario).");
             System.out.println("5) Pasar editoriales a JSON.");
-            System.out.println("6) Pasar libros a JSON.");
+            System.out.println("6) Actualizar editoriales a JSON.");
+            System.out.println("7) Pasar libros a JSON.");
             System.out.print("Escribe qué quieres hacer: ");
             int opc = Integer.parseInt(sc.nextLine());
             System.out.println("- - - - - - - - - - - - - - - - -");
@@ -93,6 +91,8 @@ public class LibroService {
                     pasarEditorialCsvABinario();
                     System.out.println("Pasando libros a JSON");
                     pasarEditorialBinarioJson();
+                    System.err.println("V2");
+                    pasarEditorialBinarioJsonV2();
                     try {
                     List<Editorial> editoriales = editorialesJson.getAll(); 
                     for (Editorial editorial : editoriales) {
@@ -105,6 +105,15 @@ public class LibroService {
                 break;
 
                 case 6:
+                    try {
+                        List<Editorial> editoriales = csv.getAll();
+                        editorialesJson.updateAll(editoriales);
+                    } catch (Exception e) {
+                    }
+                    
+                break;
+
+                case 7:
                     try {
                         // Leyendo libros de binario
                         List<Libro> libros = pasarLibroBinarioAObjeto();
@@ -343,7 +352,17 @@ public class LibroService {
 
     // HACEEEER
     public static void pasarEditorialCsvABinarioV2(){
-        
+        File CsvFile =  new File("repaso\\src\\main\\java\\com\\example\\editoriales.csv");
+        List<Editorial> editoriales = pasarEditorialesaObjeto();
+        try (
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(CsvFile));
+        ){
+            for (Editorial editorial : editoriales) {
+                oos.writeObject(editorial);
+            }
+
+        } catch (Exception e) {
+        }
     }
 
     public static List<Editorial> pasarEditorialBinarioAObjeto(){
@@ -390,6 +409,29 @@ public class LibroService {
 
     //HACEEER
     public static void pasarEditorialBinarioJsonV2(){
+        File editorialBinarioFile =  new File("repaso\\src\\main\\java\\com\\example\\editorialesBinario.txt");
+        List<Editorial> listaEditoriales = new ArrayList<>();
+        File editorialJson = new File("repaso\\src\\main\\java\\dataJson\\editoriale2s.json");
+        ObjectMapper mapper = new ObjectMapper();
+        try (
+            ObjectInputStream oisReader =  new ObjectInputStream(new FileInputStream(editorialBinarioFile));
+        ) {
+            while (true) { 
+                Object o =  oisReader.readObject();
+                Editorial editorial = (Editorial) o;
+                listaEditoriales.add(editorial);
+            }
+        } catch(EOFException e){
+            System.out.println("Datos leidos correctamente");
+        }
+        catch (Exception e) {
+        }
 
+        try {
+            
+            mapper.writerWithDefaultPrettyPrinter().writeValue(editorialJson,listaEditoriales);
+            
+        } catch (Exception e) {
+        }
     }
 }

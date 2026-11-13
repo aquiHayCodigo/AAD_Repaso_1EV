@@ -1,14 +1,9 @@
 package DAO;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -32,7 +27,6 @@ public class LibroJSONDAO implements LibroDAO {
     public List<Libro> getAll() throws Exception {
         List<Libro> libros = new ArrayList<>();
         try {
-            
             Libro libro = mapper.readValue(this.archivo, Libro.class);
             libros.add(libro);
 
@@ -53,8 +47,11 @@ public class LibroJSONDAO implements LibroDAO {
 
     @Override
     public void updateAll(List<Libro> libros) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAll'");
+        try {
+            this.mapper.writeValue(this.archivo, libros);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -33,6 +33,7 @@ public class EditorialJSONDAO implements EditorialDAO {
           for (Editorial editorial : editoriales) {
             editorialesList.add(editorial);
           }
+          editorialesList = mapper.readValue(this.archivo, new TypeReference<List<Editorial>>(){});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,7 +42,11 @@ public class EditorialJSONDAO implements EditorialDAO {
 
     @Override
     public void updateAll(List<Editorial> editoriales) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAll'");
+
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(this.archivo, editoriales);
+            
+        } catch (Exception e) {
+        }
     }
 }
