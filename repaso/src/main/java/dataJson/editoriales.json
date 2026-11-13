@@ -1,0 +1,25 @@
+[ {
+  "cif" : "123456789",
+  "nombre" : "LibrosRaros",
+  "pais" : "Spain"
+}, {
+  "cif" : "987654321",
+  "nombre" : "WeirdBooks",
+  "pais" : "UK"
+}, {
+  "cif" : "456789123",
+  "nombre" : "NoMeLeas",
+  "pais" : "Spain"
+}, {
+  "cif" : "111222234",
+  "nombre" : "Ximena",
+  "pais" : "Peru"
+}, {
+  "cif" : "111222234",
+  "nombre" : "Ximena",
+  "pais" : "Peru"
+}, {
+  "cif" : "111222234",
+  "nombre" : "Ximena",
+  "pais" : "Peru"
+} ]
